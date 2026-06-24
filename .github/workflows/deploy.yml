@@ -83,4 +83,3 @@ jobs:
             cd /home/ubuntu/Launchpad
             git pull
             docker compose up -d --build
-```
