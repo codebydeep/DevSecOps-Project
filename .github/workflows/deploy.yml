@@ -52,7 +52,6 @@ jobs:
 
   trivy-scan-mongo:
     runs-on: ubuntu-latest
-    needs: trivy-fs-scan
 
     steps:
       - name: Trivy Scan - MongoDB
