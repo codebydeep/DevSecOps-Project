@@ -1,5 +1,4 @@
 name: Complete DevSecOps Pipeline with Trivy, Snyk and SonarQube
-
 on:
   push:
     branches:
@@ -8,29 +7,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22        
           script: |
-            set -ex
-
-            pwd
-            whoami
-
+            set -e
             cd /home/ubuntu/Launchpad
-
-            git status
-            git pull origin main
-
-            docker compose down
+            git pull
             docker compose up -d --build
-
-            docker ps
