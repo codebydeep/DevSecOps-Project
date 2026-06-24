@@ -20,6 +20,17 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
+            set -ex
+
+            pwd
+            whoami
+
             cd /home/ubuntu/Launchpad
-            git pull
+
+            git status
+            git pull origin main
+
+            docker compose down
             docker compose up -d --build
+
+            docker ps
