@@ -40,7 +40,7 @@
 - Frontend: React + Vite  
 - Backend: Node.js + Express  
 - Database: MongoDB  
-- DevOps: Docker, Docker Compose, Jenkins, GitHub-actions
+- DevOps: Docker, Docker Compose, Jenkins
 - Cloud: Azure
 - Orchestration: Kubernetes  (Soon)
 
