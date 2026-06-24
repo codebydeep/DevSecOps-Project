@@ -31,7 +31,7 @@
   Get smart assistance for tasks, planning, and productivity with AI-powered suggestions.
 
 - 🔐 **Secure Authentication**  
-  Robust and secure authentication system to protect user data.
+  Robust and secure Authentication system to protect user data.
 
 ---
 
