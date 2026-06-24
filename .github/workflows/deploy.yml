@@ -20,6 +20,39 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST }}
 
+  snyk-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js             
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      - name: Snyk - Test Frontend Dependencies
+        run: snyk test --file=frontend/package.json --severity-threshold=high
+        continue-on-error: true         
+
+      - name: Snyk - Test Backend Dependencies
+        run: snyk test --file=backend/package.json --severity-threshold=high
+        continue-on-error: true
+
+      - name: Snyk - Docker Image Scan Frontend
+        run: snyk container test ${{ secrets.DOCKERHUB_USERNAME }}/app-frontend:latest --severity-threshold=high
+        continue-on-error: true
+
+      - name: Snyk - Docker Image Scan Backend
+        run: snyk container test ${{ secrets.DOCKERHUB_USERNAME }}/app-backend:latest --severity-threshold=high
+        continue-on-error: true        
+
   trivy-image-scan-frontend:
     runs-on: ubuntu-latest
 
