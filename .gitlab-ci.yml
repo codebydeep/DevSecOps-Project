@@ -1,7 +1,8 @@
 stages:
     - sonar_qube scan
     - snyk scan
-    - trivy scan   
+    - trivy scan
+    - deploy
 
 SonarQube Scanning:
   stage: sonar_qube scan
@@ -79,3 +80,24 @@ trivy-scan-mongo:
   allow_failure: true
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client git
+    - eval $(ssh-agent -s)
+    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST "
+        set -e &&
+        cd /home/ubuntu/Launchpad &&
+        git pull &&
+        docker compose up -d --build
+      "
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main'
