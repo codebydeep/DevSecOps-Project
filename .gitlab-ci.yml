@@ -1,7 +1,7 @@
 stages:
     - sonar_qube scan
     - snyk scan
-    - trivy scan    
+    - trivy scan   
 
 SonarQube Scanning:
   stage: sonar_qube scan
@@ -33,9 +33,9 @@ Snyk Scan:
   allow_failure: true
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
-    
+
 trivy-image-scan-frontend:
-  stage: trivy_scan
+  stage: trivy scan
   image: docker:latest
   services:
     - docker:dind
@@ -51,7 +51,7 @@ trivy-image-scan-frontend:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 trivy-image-scan-backend:
-  stage: trivy_scan
+  stage: trivy scan
   image: docker:latest
   services:
     - docker:dind
@@ -67,7 +67,7 @@ trivy-image-scan-backend:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 trivy-scan-mongo:
-  stage: trivy_scan
+  stage: trivy scan
   image: docker:latest
   services:
     - docker:dind
