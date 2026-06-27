@@ -1,14 +1,7 @@
 stages:
     - sonar_qube scan
     - snyk scan
-    - trivy scan
-
-variables:
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  GIT_DEPTH: "0"
-
-  SONAR_HOST_URL: "http://13.239.40.62:9000/"
-  SONAR_TOKEN: "squ_46c04f273eb7df3a5346c5995ea8d8792f6b4bda"      
+    - trivy scan    
 
 SonarQube Scanning:
   stage: sonar_qube scan
@@ -20,10 +13,6 @@ SonarQube Scanning:
     GIT_DEPTH: "0"
     SONAR_TOKEN: $SONAR_TOKEN
     SONAR_HOST_URL: $SONAR_HOST_URL
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
   script:
     - sonar-scanner -Dsonar.qualitygate.wait=true
   allow_failure: false
