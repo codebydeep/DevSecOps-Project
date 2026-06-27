@@ -18,3 +18,18 @@ SonarQube Scanning:
   allow_failure: false
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+Snyk Scan:
+  stage: snyk scan
+  image: node:18
+  before_script:
+    - npm install -g snyk
+    - snyk auth $SNYK_TOKEN
+  script:
+    - snyk test --file=frontend/package.json --severity-threshold=high || true
+    - snyk test --file=backend/package.json --severity-threshold=high || true
+    - snyk container test $DOCKERHUB_USERNAME/app-frontend:latest --severity-threshold=high || true
+    - snyk container test $DOCKERHUB_USERNAME/app-backend:latest --severity-threshold=high || true
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
