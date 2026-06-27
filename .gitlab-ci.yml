@@ -95,7 +95,7 @@ deploy:
   script:
     - ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST "
         set -e &&
-        cd /home/ubuntu/Launchpad &&
+        cd /home/ubuntu/gitlab/dev-sec-ops-project &&
         git pull &&
         docker compose up -d --build
       "
