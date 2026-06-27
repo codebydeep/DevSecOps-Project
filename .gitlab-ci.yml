@@ -4,6 +4,7 @@ stages:
     - trivy scan
 
 SonarQube Scanning:
+  stage: sonar_qube scan
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
